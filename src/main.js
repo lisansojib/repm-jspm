@@ -1,5 +1,7 @@
 import 'bootstrap';
 
+import authConfig from 'auth/authConfig';
+
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
@@ -7,6 +9,10 @@ export function configure(aurelia) {
 
     // registers global resources
     .feature('resources')
+
+    .plugin('aurelia-authentication', baseConfig => {
+        baseConfig.configure(authConfig);
+    })
 
     .plugin('aurelia-google-maps', config => {
 			config.options({

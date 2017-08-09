@@ -4,7 +4,7 @@ import {ValidationControllerFactory, ValidationRules} from 'aurelia-validation';
 import {BootstrapFormRenderer} from 'resources/renderer/bootstrap-form-renderer';
 
 @inject(ValidationControllerFactory, AuthService)
-export class LoginNew {
+export class Login {
 	username = '';
 	password = '';
 	controller = null;
