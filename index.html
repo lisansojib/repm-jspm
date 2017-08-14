@@ -2,11 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Aurelia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Realtor Analytics">
+    <link href="css/RA.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/031463d8f0.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <title>Realtor Analyitcs Beta (0.2)</title>
+
     <!--The FontAwesome version is locked at 4.6.3 in the package.json file to keep this from breaking.-->
-    <link rel="stylesheet" href="jspm_packages/npm/font-awesome@4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="styles/styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="jspm_packages/npm/font-awesome@4.6.3/css/font-awesome.min.css"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
   </head>
 
   <body aurelia-app="main">
@@ -21,6 +26,8 @@
     <!-- Windows 10 Anniversary Update on 2 August 2016. Once that update has pushed out, you may    -->
     <!-- consider removing bluebird from your project and simply using native promises if you do     -->
     <!-- not need to support Internet Explorer.                                                      -->
+    <script src="/FrontEnd/Security/Script.aspx"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="jspm_packages/system.js"></script>
     <script src="config.js"></script>
     <script src="jspm_packages/npm/bluebird@3.4.1/js/browser/bluebird.min.js"></script>

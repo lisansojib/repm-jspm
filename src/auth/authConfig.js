@@ -7,11 +7,11 @@ if (!baseUrl)
 
 export default {
   endpoint: 'auth',
-  configureEndpoints: ['auth', 'crm', 'crmSetup', 'crmManage'],
+  configureEndpoints: ['auth'],
 
   // SPA related options  
-  loginRedirect:'/dashboard',                 // The SPA url to which the user is redirected after a successful login  
-  logoutRedirect:'/home#login',                // The SPA url to which the user is redirected after a successful logout  
+  loginRedirect:'#/',                 // The SPA url to which the user is redirected after a successful login  
+  logoutRedirect:'#/login',                // The SPA url to which the user is redirected after a successful logout  
   loginRoute:'/login',                // The SPA route used when an unauthenticated user tries to access an SPA page that requires authentication  
   loginOnSignup: false,               // Whether or not an authentication token is provided in the response to a successful signup  
   signupRedirect: '/home#login',          // If loginOnSignup == false: The SPA url to which the user is redirected after a successful signup (else loginRedirect is used)  

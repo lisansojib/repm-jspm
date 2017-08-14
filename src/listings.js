@@ -1,4 +1,4 @@
-// <reference path="../../../FrontEnd/GIS/GetJSON.aspx" />
+/// <reference path="../../../FrontEnd/GIS/GetJSON.aspx" />
 import { inject, bindable, computedFrom } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
 import { applicationState } from 'applicationState';

@@ -18,7 +18,7 @@ export class Login {
 
 	activate(){
 		if(this.isAuthenticated){
-				window.location.href="/dashboard";
+			window.location.href="#/";
 		}
 	}
 	
@@ -47,7 +47,7 @@ export class Login {
 
 	canActivated(){
 		if(this.auth.authenticated()){
-				window.location.href="/";
+			window.location.href="/";
 		}
 	}
 

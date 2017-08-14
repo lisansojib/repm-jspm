@@ -9,9 +9,9 @@ export class App {
   configureRouter(config, router) {
     config.title = 'Welcome';
     config.map([
-      { route: ['', 'Listings'], name: 'Listings', moduleId: './listings', nav: true, title: 'Listings' },
-      { route: 'Find', name: 'Find', moduleId: './listings', nav: true, title: 'Find' },
-      { route: 'Listings', name: 'Projects', moduleId: './listings', nav: true, title: 'Projects' },
+      { route: ['', 'listings'], name: 'Listings', moduleId: './listings', nav: true, title: 'Listings' },
+      { route: 'find', name: 'Find', moduleId: './listings', nav: true, title: 'Find' },
+      { route: 'listings', name: 'Projects', moduleId: './listings', nav: true, title: 'Projects' },
       { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' },
     ]);
 
