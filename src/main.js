@@ -1,4 +1,7 @@
+import 'jquery';
 import 'bootstrap';
+import 'fetch';
+import 'toastr';
 
 import authConfig from 'auth/authConfig';
 

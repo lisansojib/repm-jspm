@@ -1,4 +1,3 @@
-import 'bootstrap';
 import { inject, bindable, computedFrom } from 'aurelia-framework';
 import { applicationState } from 'applicationState';
 import { RouterConfiguration, Router } from 'aurelia-router';
