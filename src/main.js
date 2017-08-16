@@ -13,6 +13,16 @@ export function configure(aurelia) {
     // registers global resources
     .feature('resources')
 
+    // registers aurelia validation plugin
+    .plugin('aurelia-validation')
+
+    // Load the plugin, and set the base url.
+    .plugin('aurelia-api', config => {
+        config
+            .registerEndpoint('auth', '/api-auth/')
+            .setDefaultEndpoint('auth');
+    })
+
     .plugin('aurelia-authentication', baseConfig => {
         baseConfig.configure(authConfig);
     })
@@ -20,7 +30,8 @@ export function configure(aurelia) {
     .plugin('aurelia-google-maps', config => {
 			config.options({
 				apiKey: 'AIzaSyBUTbBmV57ZxYULwWqbBz-S2vGFfrHknKk',
-        apiLibraries: 'drawing,geometry' //get optional libraries like drawing, geometry, ... - comma seperated list
+        apiLibraries: 'drawing,geometry', //get optional libraries like drawing, geometry, ... - comma seperated list
+        options: { panControl: true, panControlOptions: { position: 9 } } //add google.maps.MapOptions on construct (https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapOptions)
 			});
 		});
     //Uncomment the line below to enable animation.

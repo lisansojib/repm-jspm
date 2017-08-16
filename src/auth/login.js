@@ -1,7 +1,7 @@
-import {AuthService} from 'aurelia-authentication';
-import {inject, computedFrom} from 'aurelia-framework';
-import {ValidationControllerFactory, ValidationRules} from 'aurelia-validation';
-import {BootstrapFormRenderer} from 'resources/renderer/bootstrap-form-renderer';
+import { AuthService } from 'aurelia-authentication';
+import { inject, computedFrom } from 'aurelia-framework';
+import { ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
+import { BootstrapFormRenderer } from 'resources/renderer/bootstrap-form-renderer';
 
 @inject(ValidationControllerFactory, AuthService)
 export class Login {
@@ -10,58 +10,66 @@ export class Login {
 	controller = null;
 	rememberMe = false;
 
-	constructor(controllerFactory, authService){
+	constructor(controllerFactory, authService) {
+		debugger;
 		this.authService = authService;
 		this.controller = controllerFactory.createForCurrentScope();
-		this.controller.addRenderer(new BootstrapFormRenderer());	
+		this.controller.addRenderer(new BootstrapFormRenderer());
 	}
 
-	activate(){
-		if(this.isAuthenticated){
-			window.location.href="#/";
+	activate() {
+		if (this.isAuthenticated) {
+			window.location.href = "#/";
 		}
 	}
-	
+
 	submit() {
 		return this.controller.validate()
 			.then(result => {
-				if(result.valid){
-					toastr.info("You are now sign in to eatsy");
-					this.authService.login({
-						username: this.email,
-						password: this.password,
-						grant_type: "password"
-					}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})  
+				debugger;
+				if (result.valid) {
+					toastr.info("You are now sign in to Puget builder");
+					this.authService.login(
+						{
+							username: this.email,
+							password: this.password,
+							grant_type: "password"
+						},
+						{
+							mode: 'cors',
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							}
+						})
 						.then(response => {
+							debugger;
 							toastr.success('Login successful');
-							localStorage.setItem('user_email', response.email)
-							localStorage.setItem('email_confirmed', response.confirmed);
-							localStorage.setItem('auto_resend_email', response.auto_resend_email);
+							localStorage.setItem('session_token', response.session_token)
 						})
 						.catch(err => {
-							toastr.error("Invalid email or password."); 
+							toastr.error("Invalid email or password.");
 						});
 				}
-			})		
+			})
 	};
 
-	canActivated(){
-		if(this.auth.authenticated()){
-			window.location.href="/";
+	canActivated() {
+		if (this.auth.authenticated()) {
+			window.location.href = "/";
 		}
 	}
 
 	authenticate(name) {
 		debugger;
 		return this.authService.authenticate(name)
-		.then(response => {
-			debugger;
-			console.log("auth response " + response);
-		})
-		.catch(err => {
-			debugger;
-			console.log(err);
-		});
+			.then(response => {
+				debugger;
+				console.log("auth response " + response);
+			})
+			.catch(err => {
+				debugger;
+				console.log(err);
+			});
 	}
 
 	// use computedFrom to avoid dirty checking
@@ -70,8 +78,8 @@ export class Login {
 		return this.authService.authenticated;
 	}
 
-	setRemember(){
-		if(this.rememberMe)
+	setRemember() {
+		if (this.rememberMe)
 			localStorage.setItem("aurelia-remember", 'yes');
 		else
 			localStorage.removeItem("aurelia-remember");
@@ -80,6 +88,6 @@ export class Login {
 
 
 ValidationRules
-  .ensure(a => a.email).required().email()
-  .ensure(a => a.password).required()
-  .on(LoginNew);
+	.ensure(a => a.email).required().email()
+	.ensure(a => a.password).required()
+	.on(Login);

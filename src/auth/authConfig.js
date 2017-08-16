@@ -19,8 +19,8 @@ export default {
   storageChangedReload: 0,            // reload page when storage changed aka login/logout in other tabs/windows. 0 = don't reload (default), 1 = do reload page
 
   // API related options  
-  baseUrl: '',                        // The base url used for all authentication related requests, including provider.url below. This appends to the httpClient/endpoint base url, it does not override it. 
-  loginUrl: baseUrl + '/token',                 // The API endpoint to which login requests are sent   
+  baseUrl: 'http://localhost',                        // The base url used for all authentication related requests, including provider.url below. This appends to the httpClient/endpoint base url, it does not override it. 
+  loginUrl: '/token',                 // The API endpoint to which login requests are sent   
   signupUrl: '/register',    // The API endpoint to which signup requests are sent
   profileUrl: '/userinfo',   // The API endpoint used in profile requests (inc. `find/get` and `update`)
   profileMethod: 'put',               // The method used to update the profile ('put' or 'patch')
