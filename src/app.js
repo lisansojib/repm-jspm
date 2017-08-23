@@ -8,8 +8,8 @@ export class App {
     configureRouter(config, router) {
         config.title = 'Welcome';
         config.map([
-            { route: ['', 'listings'], name: 'Listings', moduleId: './listings', nav: true, title: 'Listings' },
-            { route: 'find', name: 'Find', moduleId: './listings', nav: true, title: 'Find' },
+            { route: ['', 'login'], name: 'Listings', moduleId: 'auth/login', nav: true, title: 'login' },
+            { route: 'find', name: 'Find', moduleId: './listings', nav: true, title: 'Find', auth: true },
             { route: 'listings', name: 'Projects', moduleId: './listings', nav: true, title: 'Projects' },
             { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' }
         ]);
@@ -21,19 +21,13 @@ export class App {
         this.appState = appState;
     }
 
-    refreshConnection() {
-        this.appState.refreshConnection();
-    }
-
     attached() {
-        console.log("Main App Attached");
-        this.refreshConnection();
-        $(".splash").hide();
+        // console.log("Main App Attached");
+        this.appState.refreshConnection();
+        // $(".splash").hide();
     }
 
-    activate() {
-        //this.fetchConfig.configure();
+    detached() {
+        this.ready = false;
     }
-
-    message = 'Welcome to Aurelia!';
 }
