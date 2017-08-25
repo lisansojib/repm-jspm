@@ -19,7 +19,7 @@ export class Login {
 
     activate() {
         if (this.isAuthenticated) {
-            window.location.href = "#/";
+            window.location.href = "#listings";
         }
     }
 

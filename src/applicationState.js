@@ -62,14 +62,8 @@ export class applicationState {
         };
     }
 
-    detached() {
-        console.log("Stopping SignalR Connection");
-        this.connection.stop();
-    }
-
     refreshConnection() {
         var self = this;
-        debugger;
         this.connection.qs = {
             "access_token": this.authService.getAccessToken(),
             "session_token": localStorage.getItem("session_token")
@@ -97,5 +91,9 @@ export class applicationState {
         }
     }
 
-
+    // use computedFrom to avoid dirty checking
+    @computedFrom('authService.authenticated')
+    get isAuthenticated() {
+        return this.authService.authenticated;
+    }
 }

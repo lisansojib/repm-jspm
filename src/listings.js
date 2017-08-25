@@ -14,6 +14,7 @@ export class listings {
     // ---------------------------------------------------------------------------------
 
     constructor(appState, router, eventAggregator, authService) {
+        debugger;
         this.appState = appState;
         this.appState.refreshConnection();
         this.router = router;
@@ -73,8 +74,6 @@ export class listings {
         }
     ];
 
-
-
     // ---------------------------------------------------------------------------------
     // Page Load Code
     // ---------------------------------------------------------------------------------
@@ -114,6 +113,10 @@ export class listings {
 
         // On Load Event
         this.appState.connectionReady.done(function() {
+            debugger;
+            if (!self.appState.isAuthenticated)
+                return;
+
             self.refreshData();
             self.loadPOIs();
         });
