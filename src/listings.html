@@ -1,6 +1,6 @@
 
 <template>
-    <!--
+  <!--
     <nav class="navbar navbar-default navbar-static-top " style="z-index:100; color:#333333;background-color:#EEEEEE;border-color:#DDDDDD">
   <div class="container-fluid">
     
@@ -65,9 +65,9 @@
     </div>
   </div>
 </nav>-->
-        <div id="bodyDiv"  style="height:100%">
-            <div class="row">
-             <!--   <div class="col-sm-1">
+  <div id="bodyDiv" style="height:100%">
+    <div class="row">
+      <!--   <div class="col-sm-1">
                     Price Range<br />
                     
                      <div >
@@ -82,245 +82,195 @@
                           <input style="width:100px" id="lotRangeSliderID" data-ui-slider=""  type="text" change.delegate="changeLotRange"  change.trigger="changeLotRange" data-slider-min="0" data-slider-max="40000" data-slider-step="500" data-slider-value="[${filters.MinLot[0]},${filters.MaxLot[0]}]" class="slider">
                     </div>
                 </div>-->
-                <div class="col-sm-2">
-                     POI<br />
-                    <div class="form-group">
-                 <select class="form-control" name="POIsSelect" multiple size="3" change.delegate="POIchanged()">
-                     <option value="">None</option>
-                    <option repeat.for="poi of POIs" style="max-width: 150px" value.bind="poi.POIID">${poi.POIName} ${poi.POIDescription}</option>
-                 </select>
-                         <select class="form-control" style="max-width: 150px" name="POIsMaxTime" change.delegate="POIchanged()">
-                                <option value="300">5 Minutes</option>
-                                <option value="600">10 Minutes</option>
-                                <option value="900">15 Minutes</option>
-                        </select>
-                    </div>
-                </div>
-
-             
-                   <div class="col-sm-1">
-                         Lot<br />
-                        <input class="form-control" type="text" style="max-width: 110px" id="txtMinLot" change.delegate="refreshData()" value.bind="filters.MinLot[0]"/>
-                       <input class="form-control" type="text" style="max-width: 110px" id="txtMaxLot" change.delegate="refreshData()" value.bind="filters.MaxLot[0]"/>
-                </div>
-                 <div class="col-sm-1">
-                         Price<br />
-                        <input class="form-control" type="text" style="max-width: 110px" id="txtMinPrice" change.delegate="refreshData()" value.bind="filters.MinPrice[0]"/>
-                     <input class="form-control" type="text" style="max-width: 110px" id="txtMaxPrice" change.delegate="refreshData()" value.bind="filters.MaxPrice[0]"/>
-                </div>
-                <div class="col-sm-1">
-                         DOM<br />
-                        <div data-toggle="buttons" class="btn-group">
-                           <label class="btn btn-primary " click.trigger="clickRadio('DOM','1','checkDOM1')">
-                              <input id="checkDOM1" type="radio" name="options" checked="">1</label>
-                           <label class="btn btn-primary" click.trigger="clickRadio('DOM','3','checkDOM1')">
-                              <input id="checkDOM3" type="radio" name="options">3</label>
-                          <!-- <label class="btn btn-primary" click.trigger="clickRadio('DOM','7','checkDOM1')">
-                              <input id="checkDOM7" type="radio" name="options">7</label>-->
-                            <label class="btn btn-primary" click.trigger="clickRadio('DOM','30','checkDOM1')">
-                              <input id="checkDOM30" type="radio" name="options">30</label>
-                            <label class="btn btn-primary active" click.trigger="clickRadio('DOM','0','checkDOM1')">
-                              <input id="checkDOM0" type="radio" name="options">*</label>
-                        </div>
-                </div>
-                 <div class="col-sm-1">
-                         STT<br />
-                        <div data-toggle="buttons" class="btn-group">
-                           <label class="btn btn-primary active" click.trigger="clickRadio('STATDAYS','1','STATDAYS1')">
-                              <input id="STATDAYS1" type="radio" name="options" checked="">1</label>
-                           <label class="btn btn-primary" click.trigger="clickRadio('STATDAYS','3','STATDAYS3')">
-                              <input id="STATDAYS3" type="radio" name="options">3</label>
-                          <!-- <label class="btn btn-primary" click.trigger="clickRadio('DOM','7','checkDOM1')">
-                              <input id="checkDOM7" type="radio" name="options">7</label>-->
-                            <label class="btn btn-primary" click.trigger="clickRadio('STATDAYS','30','STATDAYS30')">
-                              <input id="STATDAYS30" type="radio" name="options">30</label>
-                            <label class="btn btn-primary " click.trigger="clickRadio('STATDAYS','0','STATDAYS0')">
-                              <input id="STATDAYS0" type="radio" name="options">*</label>
-                        </div>
-                </div>
-                <div class="col-sm-1">
-                    Listing Status<br />
-                   
-                     <div class="btn-group">
-                        <div data-toggle="buttons" class="btn-group">
-                            <label class="btn btn-primary active" click.trigger="clickCheckbox('ListingStatus','A','checkNew')">
-                                <input type="checkbox" id="checkNew" checked="" ><i cclass="fa fa-flash"></i>&nbsp;N</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','P','checkPending')">
-                                <input type="checkbox" id="checkPending"><i cclass="fa fa-hourglass-end"></i>&nbsp;P</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','S','checkSold')">
-                                <input type="checkbox" id="checkSold"><i cclass="fa fa-legal"></i>&nbsp;S</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','DE','checkDelisted')">
-                                <input type="checkbox" id="checkDelisted"><i cclass="fa fa-legal"></i>&nbsp;D</label>
-                        </div>
-                    </div>
-                </div>
-                 <div class="col-sm-2">
-                     Zoning<br />
-                     <div class="btn-group">
-                        <div data-toggle="buttons" class="btn-group">
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Single','checkSingle')">
-                                <input type="checkbox" id="checkSingle"  ><i class="fa fa-home"></i>&nbsp;&nbsp;S</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Multi','checkMulti')">
-                                <input type="checkbox" id="checkMulti"><i class="fa fa-building"></i>&nbsp;&nbsp;M</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Commercial','checkComm')">
-                                <input type="checkbox" id="checkComm"><i class="fa fa-industry"></i>&nbsp;&nbsp;C</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('MHA','Yes','checkMHA')">
-                                <input type="checkbox" id="checkMHA"><i cclass="fa fa-rocket"></i>&nbsp;&nbsp;U2</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('MHA2','Yes','checkMHA2')">
-                                <input type="checkbox" id="checkMHA2"><i cclass="fa fa-rocket"></i>&nbsp;&nbsp;U3</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-1">
-                        Overlay<br />
-                        <div data-toggle="buttons" class="btn-group">
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('UV','Yes','checkUV')">
-                                <input type="checkbox" id="checkUV"  >UV</label>
-                             <label class="btn btn-primary" click.trigger="clickCheckbox('FUV','Yes','checkFUV')">
-                                <input type="checkbox" id="checkFUV"  >F</label>
-                        </div>
-                </div>
-                 <div class="col-sm-2">
-                      Use<br />
-                     <div class="btn-group">
-                        <div data-toggle="buttons" class="btn-group">
-                            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','SF','checkUseHouse')">
-                                <input type="checkbox" id="checkUseHouse" checked="checked" >SF</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('Use','TownHouse','checkUseTownHouse')">
-                                <input type="checkbox" id="checkUseTownHouse">TH</label>
-                            <label class="btn btn-primary" click.trigger="clickCheckbox('Use','Condo','checkUseCondo')">
-                                <input type="checkbox" id="checkUseCondo">CN</label>
-                            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','MF','checkUseAptBuilding')">
-                                <input type="checkbox" id="checkUseAptBuilding" checked="checked">MF</label>
-                            
-                            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','Vacant','checkUseVacant')">
-                                <input type="checkbox" checked="checked" id="checkUseVacant">V</label>
-                            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','C','checkUseCom')">
-                                <input type="checkbox"  checked="checked" id="checkUseCom">C</label>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-         
-            <div class="row" style="height:100%">
-
-                    <div class="col-md-6" style="height:100%">
-
-                  
-                                <google-map view-model.ref="GoogleMap" style="height:700px" map-click.delegate="onClickMap($event)" markers.bind="mapMarkers" style="height:600px" zoom="13"  latitudebind="latitude" longitudebind="longitude"   address="Seattle, WA"></google-map>
-                          
-                   </div>
-
-               
-
-
-                <div class="col-md-6">
-
-                  
-                            <div id="listingsTableDiv" class="table-responsive " style="  height:645px" >
-                                <table id="listingsTableID" class="listingsTable table table-hover">
-                                  
-                                    
-                                       <thead id="listingsTableHead">
-                                        <tr>
-                                            <th  ><span class="thsortable" click.trigger="changeSort('StatusHours')">Stat</span> | <span class="thsortable" click.trigger="changeSort('DOM')">DOM</span> 
-
-                                                
-
-                                            </th>
-                                            <!--<th class="thsortable" click.trigger="changeSort('MLSNumber')">MLS</th>-->
-                                            
-                                           <th class="thsortable" click.trigger="changeSort('Neighbourhood')">Location</th>
-                                          
-                                    
-                                            <th class="thsortable"><span class="thsortable" click.trigger="changeSort('ListingPrice')">Price</span>
-                                                (<span class="thsortable" click.trigger="changeSort('PPImpSqft')">P</span>)</th>
-                                           
-                                            <th class="thsortable" ><span click.trigger="changeSort('LotSqft')">Parcel</span> (<span class="thsortable" click.trigger="changeSort('PPLotSqft')">P</span>)</th>
-                                             <th class="thsortable" click.trigger="changeSort('ListingSqft')">Property (<span class="thsortable" click.trigger="changeSort('YearBuilt')">Y</span> | <span class="thsortable" click.trigger="changeSort('CAP')">C</span>)</th>
-                                        </tr>
-                                    </thead>
-                                    
-                                    <tbody id="listingsTableBody">
-                                        <tr id="listingsTableRow_${listing.ListingID}" click.trigger="clickRow($event,listing.ListingID,listing.FullAddress,listing.Longitude,listing.Latitude)" class="listingsTableRow" repeat.for="listing of listings | sort:sortColumn:sortOrder">
-                                            <td class="STATUS${listing.ListingStatus | removeSpaces}">
-                                                <div class="box">      
-                                                    <span  id="listingsTableCell_ListingImage_${listing.ListingID}">
-                                                        <img border="1" src="${listing.PrimaryImage}" width="120"/>
-                                                    </span><br />
-                                                    
-                                                    <span style="color:#666666" id="listingsTableCell_DOM_${listing.ListingID}">RA: <B>${listing.StatusHours | dateFormat:'daysToHoursDays'}</B> | CDOM: <B>${listing.DOM}d</B></span>
-                                                    <div class="ribbon${listing.ListingStatus | removeSpaces}"><span>${listing.ListingType}</span></div>
-
-                                                </div>
-                                                
-                                            </td>
-
-                                            <!-- LOCATION -->
-                                            <td style="vertical-align: top;">
-                                                <font size="+1"><span id="Span8">${listing.City}</span></font>
-                                                | <span id="listingsTableCell_MLSNumber_${listing.ListingID}"><a click.trigger="hyperLink('http://www.coldwellbankerbain.com/'+listing.MLSNumber)" target="_MLS${listing.ListingID}"  href="">${listing.MLSNumber}</a></span> | <span id="listingsTableCell_TaxID_${listing.EXTID1}"><a click.trigger="hyperLink('http://blue.kingcounty.com/Assessor/eRealProperty/Dashboard.aspx?ParcelNbr='+listing.EXTID1)" target="_COUNTY${listing.ListingID}"  href="">C</a></span>
-                                                <br />
-                                                <span id="Span9">${listing.NeighbourhoodUnited}</span><br />
-                                                <span id="Span10"><a target="_RA${listing.ListingID}" click.trigger="hyperLink('../../REPM/PropertySearch.aspx?Address='+listing.FullAddress)"  href="../REPM/PropertySearch.aspx?Address=${listing.FullAddress}">${listing.StreetAddress}</a></span>
-                                            </td>
-
-                                            <!-- PRICE -->
-                                             <td style="vertical-align: top;">
-                                                 
-                                                <font size="+1"><span id="Span4">${listing.ListingPrice | numberFormat:'kmbt'}</span></font>
-                                                <br />
-                                                ${listing.PPImpSqft | numberFormat:'($0,0)'}<small>/sqft</small><br />
-                                                
-                                                    
-                                            </td>
-                                            
-                                            <!-- PARCEL -->
-                                            <td style="vertical-align: top;">
-                                                <font size="+1"><span id="listingsTableCell_SqFtLot_${listing.ListingID}">${listing.LotSqft | numberFormat:'(0,0)'}</span></font>sqft<br />
-                                                 ${listing.PPLotSqft | numberFormat:'($0,0)'}<small>/sqft</small><br />
-                                                <b><span style="border:thin; border-width:1px;border-color:#CCCCCC;background-color:#F2F2F2;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px"  id="Span6">${listing.CurrentZoning | removeSpaces}</span></b>
-                                                 <b><span class.bind="listing.ZoningFutureCSS" style="border:thin; border-width:1px;border-color:#ffc954;background-color:#ffedc5;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px"  id="Span1">${listing.ZoningFuture3 | removeSpaces}</span></b>
-                                                <font size="-1">
-                                                <span  class.bind="listing.UrbanVillageCSS" ><span style="border:thin; border-width:1px;border-color:#CCCCCC;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px" title="${listing.UrbanVillageCurrent | ralistings:'UVONLYDESC'}" id="Span7">
-                                                    ${listing.UrbanVillageCurrent | ralistings:'UVREMOVEDESC'}
-                                                </span></span>
-                                                    <span  class.bind="listing.UrbanVillageFutureCSS" ><span style="border:thin; border-width:1px;border-color:#ffc954;background-color:#ffedc5;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px" title="${listing.UrbanVillageFuture | ralistings:'UVONLYDESC'}" id="Span2">
-                                                    ${listing.UrbanVillageFuture | ralistings:'UVREMOVEDESC'}
-                                                </span></span>
-                                                   <br />
-                                                <span class.bind="listing.FrequentTransitCSS">
-                                                
-                                                <img width="10" src="img/walk.png" />${listing.FTDistanceToNearestStation | numberFormat:'(0,0)'}<sub>ft</sub> - <img width="12" src='http:${listing.FTVehicleIcon}' /><span style="border:thin; border-width:1px;border-color:#CCCCCC;margin:1px;border-style:solid;padding-left:0px;padding-right:3px">
-                                                    <a target="_ft" title="${listing.FTNearestStationName}" click.trigger="hyperLink(listing.FTNearestStationURL)">${listing.FTNearestStationLine}</a></span>
-                                                
-                                                </span>
-                                                    </font>
-                                            </td>
-
-                                            <!-- PROPERTY -->
-                                            <td style="vertical-align: top;">
-                                                <font size="+1"><span id="listingsTableCell_ListingSqft_${listing.ListingID}">${listing.ListingSqft | numberFormat:'(0,0)'}</span></font>sqft<br />
-                                                <span id="Span3"><i class="fa fa-bed" aria-hidden="true"></i> ${listing.ListingBeds | numberFormat:'removezeros' }</span> | 
-                                                <span id="Span5"><i class="fa fa-bath" aria-hidden="true"></i> ${listing.ListingBaths| numberFormat:'removezeros' }</span><br />
-                                                 <span title="${listing.PresentUseName}" id="listingsTableCell_PresentUseName_${listing.ListingID}">${listing.PresentUseGroup} ${listing.CAPTEXT}</span><br />
-                                                <span title="${listing.YearBuilt}" id="listingsTableCell_YearBuilt_$">${listing.YearBuilt}</span>
-                                            </td>
-                                           
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                     
-            </div>
-
-            
-            </div>
-            
-            
+      <div class="col-sm-2">
+        POI<br />
+        <div class="form-group">
+          <select class="form-control" name="POIsSelect" multiple size="3" change.delegate="POIchanged()">
+            <option value="">None</option>
+            <option repeat.for="poi of POIs" style="max-width: 150px" value.bind="poi.POIID">${poi.POIName} ${poi.POIDescription}</option>
+          </select>
+          <select class="form-control" style="max-width: 150px" name="POIsMaxTime" change.delegate="POIchanged()">
+            <option value="300">5 Minutes</option>
+            <option value="600">10 Minutes</option>
+            <option value="900">15 Minutes</option>
+          </select>
         </div>
-      
-    
-</template>
+      </div>
+      <div class="col-sm-1">
+        Lot<br />
+        <input class="form-control" type="text" style="max-width: 110px" id="txtMinLot" change.delegate="refreshData()" value.bind="filters.MinLot[0]" />
+        <input class="form-control" type="text" style="max-width: 110px" id="txtMaxLot" change.delegate="refreshData()" value.bind="filters.MaxLot[0]" />
+      </div>
+      <div class="col-sm-1">
+        Price<br />
+        <input class="form-control" type="text" style="max-width: 110px" id="txtMinPrice" change.delegate="refreshData()" value.bind="filters.MinPrice[0]" />
+        <input class="form-control" type="text" style="max-width: 110px" id="txtMaxPrice" change.delegate="refreshData()" value.bind="filters.MaxPrice[0]" />
+      </div>
+      <div class="col-sm-1">
+        DOM<br />
+        <div data-toggle="buttons" class="btn-group">
+          <label class="btn btn-primary " click.trigger="clickRadio('DOM','1','checkDOM1')"><input id="checkDOM1" type="radio" name="options" checked="">1</label>
+          <label class="btn btn-primary" click.trigger="clickRadio('DOM','3','checkDOM1')"><input id="checkDOM3" type="radio" name="options">3</label>
+          <!-- <label class="btn btn-primary" click.trigger="clickRadio('DOM','7','checkDOM1')">
+                              <input id="checkDOM7" type="radio" name="options">7</label>-->
+          <label class="btn btn-primary" click.trigger="clickRadio('DOM','30','checkDOM1')"><input id="checkDOM30" type="radio" name="options">30</label>
+          <label class="btn btn-primary active" click.trigger="clickRadio('DOM','0','checkDOM1')"><input id="checkDOM0" type="radio" name="options">*</label>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        STT<br />
+        <div data-toggle="buttons" class="btn-group">
+          <label class="btn btn-primary active" click.trigger="clickRadio('STATDAYS','1','STATDAYS1')"><input id="STATDAYS1" type="radio" name="options" checked="">1</label>
+          <label class="btn btn-primary" click.trigger="clickRadio('STATDAYS','3','STATDAYS3')"><input id="STATDAYS3" type="radio" name="options">3</label>
+          <!-- <label class="btn btn-primary" click.trigger="clickRadio('DOM','7','checkDOM1')">
+                              <input id="checkDOM7" type="radio" name="options">7</label>-->
+          <label class="btn btn-primary" click.trigger="clickRadio('STATDAYS','30','STATDAYS30')"><input id="STATDAYS30" type="radio" name="options">30</label>
+          <label class="btn btn-primary " click.trigger="clickRadio('STATDAYS','0','STATDAYS0')"><input id="STATDAYS0" type="radio" name="options">*</label>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        Listing Status<br />
+        <div class="btn-group">
+          <div data-toggle="buttons" class="btn-group">
+            <label class="btn btn-primary active" click.trigger="clickCheckbox('ListingStatus','A','checkNew')"><input type="checkbox" id="checkNew" checked="" ><i cclass="fa fa-flash"></i>&nbsp;N</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','P','checkPending')"><input type="checkbox" id="checkPending"><i cclass="fa fa-hourglass-end"></i>&nbsp;P</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','S','checkSold')"><input type="checkbox" id="checkSold"><i cclass="fa fa-legal"></i>&nbsp;S</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('ListingStatus','DE','checkDelisted')"><input type="checkbox" id="checkDelisted"><i cclass="fa fa-legal"></i>&nbsp;D</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        Zoning<br />
+        <div class="btn-group">
+          <div data-toggle="buttons" class="btn-group">
+            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Single','checkSingle')"><input type="checkbox" id="checkSingle"><i class="fa fa-home"></i>&nbsp;&nbsp;S</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Multi','checkMulti')"><input type="checkbox" id="checkMulti"><i class="fa fa-building"></i>&nbsp;&nbsp;M</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('Zoning','Commercial','checkComm')"><input type="checkbox" id="checkComm"><i class="fa fa-industry"></i>&nbsp;&nbsp;C</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('MHA','Yes','checkMHA')"><input type="checkbox" id="checkMHA"><i cclass="fa fa-rocket"></i>&nbsp;&nbsp;U2</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('MHA2','Yes','checkMHA2')"><input type="checkbox" id="checkMHA2"><i cclass="fa fa-rocket"></i>&nbsp;&nbsp;U3</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        Overlay<br />
+        <div data-toggle="buttons" class="btn-group">
+          <label class="btn btn-primary" click.trigger="clickCheckbox('UV','Yes','checkUV')"><input type="checkbox" id="checkUV">UV</label>
+          <label class="btn btn-primary" click.trigger="clickCheckbox('FUV','Yes','checkFUV')"><input type="checkbox" id="checkFUV">F</label>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        Use<br />
+        <div class="btn-group">
+          <div data-toggle="buttons" class="btn-group">
+            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','SF','checkUseHouse')"><input type="checkbox" id="checkUseHouse" checked="checked" >SF</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('Use','TownHouse','checkUseTownHouse')"><input type="checkbox" id="checkUseTownHouse">TH</label>
+            <label class="btn btn-primary" click.trigger="clickCheckbox('Use','Condo','checkUseCondo')"><input type="checkbox" id="checkUseCondo">CN</label>
+            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','MF','checkUseAptBuilding')"><input type="checkbox" id="checkUseAptBuilding" checked="checked">MF</label>
 
+            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','Vacant','checkUseVacant')"><input type="checkbox" checked="checked" id="checkUseVacant">V</label>
+            <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','C','checkUseCom')"><input type="checkbox"  checked="checked" id="checkUseCom">C</label>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="height:100%">
+      <div class="col-md-6" style="height:100%">
+        <google-map view-model.ref="GoogleMap" style="height:700px" map-click.delegate="onClickMap($event)" markers.bind="mapMarkers"
+           zoom="13" latitude="latitude" longitude="longitude" address="Seattle, WA"></google-map>
+      </div>
+      <div class="col-md-6">
+        <div id="listingsTableDiv" class="table-responsive " style="  height:645px">
+          <table id="listingsTableID" class="listingsTable table table-hover">
+            <thead id="listingsTableHead">
+              <tr>
+                <th><span class="thsortable" click.trigger="changeSort('StatusHours')">Stat</span> | <span class="thsortable" click.trigger="changeSort('DOM')">DOM</span>
+                </th>
+                <!--<th class="thsortable" click.trigger="changeSort('MLSNumber')">MLS</th>-->
+                <th class="thsortable" click.trigger="changeSort('Neighbourhood')">Location</th>
+                <th class="thsortable">
+                  <span class="thsortable" click.trigger="changeSort('ListingPrice')">Price</span> (
+                  <span class="thsortable" click.trigger="changeSort('PPImpSqft')">P</span>)
+                </th>
+
+                <th class="thsortable">
+                  <span click.trigger="changeSort('LotSqft')">Parcel</span> (<span class="thsortable" click.trigger="changeSort('PPLotSqft')">P</span>)
+                </th>
+                <th class="thsortable" click.trigger="changeSort('ListingSqft')">Property (<span class="thsortable" click.trigger="changeSort('YearBuilt')">Y</span> | <span class="thsortable"
+                    click.trigger="changeSort('CAP')">C</span>)
+                </th>
+              </tr>
+            </thead>
+
+            <tbody id="listingsTableBody">
+              <tr id="listingsTableRow_${listing.ListingID}" click.trigger="clickRow($event,listing.ListingID,listing.FullAddress,listing.Longitude,listing.Latitude)"
+                class="listingsTableRow" repeat.for="listing of listings | sort:sortColumn:sortOrder">
+                <td class="STATUS${listing.ListingStatus | removeSpaces}">
+                  <div class="box">
+                    <span id="listingsTableCell_ListingImage_${listing.ListingID}">
+                        <img border="1" src="${listing.PrimaryImage}" width="120"/>
+                    </span><br />
+                    <span style="color:#666666" id="listingsTableCell_DOM_${listing.ListingID}">RA: <B>${listing.StatusHours | dateFormat:'daysToHoursDays'}</B> | CDOM: <B>${listing.DOM}d</B></span>
+                    <div class="ribbon${listing.ListingStatus | removeSpaces}"><span>${listing.ListingType}</span></div>
+                  </div>
+                </td>
+
+                <!-- LOCATION -->
+                <td style="vertical-align: top;">
+                  <font size="+1"><span id="Span8">${listing.City}</span></font>
+                  | <span id="listingsTableCell_MLSNumber_${listing.ListingID}"><a click.trigger="hyperLink('http://www.coldwellbankerbain.com/'+listing.MLSNumber)" target="_MLS${listing.ListingID}"  href="">${listing.MLSNumber}</a></span>                  | <span id="listingsTableCell_TaxID_${listing.EXTID1}"><a click.trigger="hyperLink('http://blue.kingcounty.com/Assessor/eRealProperty/Dashboard.aspx?ParcelNbr='+listing.EXTID1)" target="_COUNTY${listing.ListingID}"  href="">C</a></span>
+                  <br />
+                  <span id="Span9">${listing.NeighbourhoodUnited}</span><br />
+                  <span id="Span10"><a target="_RA${listing.ListingID}" click.trigger="hyperLink('../../REPM/PropertySearch.aspx?Address='+listing.FullAddress)"  href="../REPM/PropertySearch.aspx?Address=${listing.FullAddress}">${listing.StreetAddress}</a></span>
+                </td>
+
+                <!-- PRICE -->
+                <td style="vertical-align: top;">
+                  <font size="+1"><span id="Span4">${listing.ListingPrice | numberFormat:'kmbt'}</span></font>
+                  <br /> ${listing.PPImpSqft | numberFormat:'($0,0)'}<small>/sqft</small><br />
+                </td>
+
+                <!-- PARCEL -->
+                <td style="vertical-align: top;">
+                  <font size="+1">
+                    <span id="listingsTableCell_SqFtLot_${listing.ListingID}">${listing.LotSqft | numberFormat:'(0,0)'}</span>
+                  </font>sqft<br/> ${listing.PPLotSqft | numberFormat:'($0,0)'}<small>/sqft</small><br />
+                  <b><span style="border:thin; border-width:1px;border-color:#CCCCCC;background-color:#F2F2F2;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px"  id="Span6">${listing.CurrentZoning | removeSpaces}</span></b>
+                  <b><span class.bind="listing.ZoningFutureCSS" style="border:thin; border-width:1px;border-color:#ffc954;background-color:#ffedc5;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px"  id="Span1">${listing.ZoningFuture3 | removeSpaces}</span></b>
+                  <font size="-1">
+                    <span class.bind="listing.UrbanVillageCSS"><span style="border:thin; border-width:1px;border-color:#CCCCCC;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px" title="${listing.UrbanVillageCurrent | ralistings:'UVONLYDESC'}" id="Span7">
+                        ${listing.UrbanVillageCurrent | ralistings:'UVREMOVEDESC'}
+                    </span></span>
+                    <span class.bind="listing.UrbanVillageFutureCSS"><span style="border:thin; border-width:1px;border-color:#ffc954;background-color:#ffedc5;margin:1px;border-style:dashed;padding-left:3px;padding-right:3px" title="${listing.UrbanVillageFuture | ralistings:'UVONLYDESC'}" id="Span2">
+                        ${listing.UrbanVillageFuture | ralistings:'UVREMOVEDESC'}
+                    </span></span>
+                    <br />
+                    <span class.bind="listing.FrequentTransitCSS">
+                      <img width="10" src="img/walk.png" />${listing.FTDistanceToNearestStation | numberFormat:'(0,0)'}<sub>ft</sub> - <img width="12" src='http:${listing.FTVehicleIcon}' />
+                      <span style="border:thin; border-width:1px;border-color:#CCCCCC;margin:1px;border-style:solid;padding-left:0px;padding-right:3px">
+                          <a target="_ft" title="${listing.FTNearestStationName}" click.trigger="hyperLink(listing.FTNearestStationURL)">${listing.FTNearestStationLine}</a>
+                      </span>
+                    </span>
+                  </font>
+                </td>
+
+                <!-- PROPERTY -->
+                <td style="vertical-align: top;">
+                  <font size="+1">
+                    <span id="listingsTableCell_ListingSqft_${listing.ListingID}">${listing.ListingSqft | numberFormat:'(0,0)'}</span>
+                  </font>sqft<br/>
+                  <span id="Span3"><i class="fa fa-bed" aria-hidden="true"></i> ${listing.ListingBeds | numberFormat:'removezeros' }</span>|
+                  <span
+                    id="Span5"><i class="fa fa-bath" aria-hidden="true"></i> ${listing.ListingBaths| numberFormat:'removezeros' }</span><br/>
+                    <span title="${listing.PresentUseName}" id="listingsTableCell_PresentUseName_${listing.ListingID}">${listing.PresentUseGroup} ${listing.CAPTEXT}</span><br
+                    />
+                    <span title="${listing.YearBuilt}" id="listingsTableCell_YearBuilt_$">${listing.YearBuilt}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
