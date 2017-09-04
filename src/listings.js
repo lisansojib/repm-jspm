@@ -14,7 +14,6 @@ export class listings {
     // ---------------------------------------------------------------------------------
 
     constructor(appState, router, eventAggregator, authService) {
-        debugger;
         this.appState = appState;
         this.appState.refreshConnection();
         this.router = router;
@@ -78,6 +77,10 @@ export class listings {
     // Page Load Code
     // ---------------------------------------------------------------------------------
 
+    canActivate() {
+        return this.appState.isAuthenticated;
+    }
+
     attached() {
         var self = this;
 
@@ -113,10 +116,6 @@ export class listings {
 
         // On Load Event
         this.appState.connectionReady.done(function() {
-            debugger;
-            if (!self.appState.isAuthenticated)
-                return;
-
             self.refreshData();
             self.loadPOIs();
         });
@@ -419,9 +418,8 @@ export class listings {
 
     loadPOIs() {
         var self = this;
-        //console.log(this.filters);
+        debugger;
         this.appState.listingsHub.invoke('GetPOIs').done(function(data) {
-            //console.log('Finished calling GetListings, result size was ', data.length);
             self.POIs = JSON.parse(data);
         }).fail(function(data) {
             console.log('Failed calling GetPOIs');
@@ -430,7 +428,6 @@ export class listings {
 
     refreshData() {
         var self = this;
-        console.log(this.filters);
         debugger;
         this.appState.listingsHub.invoke('GetListings', this.filters).done(function(data) {
             console.log('Finished calling GetListings, result size was ', data.length);

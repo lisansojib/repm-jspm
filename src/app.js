@@ -15,9 +15,10 @@ export class App {
         config.title = 'Welcome';
         config.addPipelineStep('authorize', AuthorizeStep);
         config.map([
-            { route: ['', 'login'], name: 'login', moduleId: 'auth/login', nav: true, title: 'login' },
+            { route: ['', 'login'], name: 'login', moduleId: 'auth/login', nav: true, title: 'Login' },
             { route: 'find', name: 'Find', moduleId: './listings', nav: true, title: 'Find', auth: true },
             { route: 'listings', name: 'Projects', moduleId: './listings', nav: true, title: 'Projects', auth: true },
+            { route: 'listing-detail/:id', name: 'project', moduleId: './listing-detail', nav: true, title: 'Project Detail', auth: true, href: "#listing-detail" },
             { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' }
         ]);
 
@@ -30,6 +31,17 @@ export class App {
 
     detached() {
         this.ready = false;
+    }
+
+    logout() {
+        let logoutRedirect = '/#login';
+        this.authService.logout(logoutRedirect)
+            .then(response => {
+                localStorage.removeItem('session_token');
+            })
+            .catch(err => {
+                console.log("error logged out");
+            });
     }
 }
 

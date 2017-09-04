@@ -116,7 +116,6 @@
                             <input type="checkbox" checked="checked" id="checkUseVacant">V</label>
                         <label class="btn btn-primary active" click.trigger="clickCheckbox('Use','C','checkUseCom')">
                             <input type="checkbox"  checked="checked" id="checkUseCom">C</label>
-
                     </div>
                 </div>
             </div>
@@ -151,6 +150,7 @@
                                         <span  id="listingsTableCell_ListingImage_${listing.ListingID}">
                                             <img border="1" src="${listing.PrimaryImage}" width="120"/>
                                         </span><br />
+
                                         
                                         <span style="color:#666666" id="listingsTableCell_DOM_${listing.ListingID}">RA: <B>${listing.StatusHours | dateFormat:'daysToHoursDays'}</B> | CDOM: <B>${listing.DOM}d</B></span>
                                         <div class="ribbon${listing.ListingStatus | removeSpaces}"><span>${listing.ListingType}</span></div>
