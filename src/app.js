@@ -23,6 +23,34 @@ export class App {
         ]);
 
         this.router = router;
+
+        for (let route of this.routeList) {
+            this.router.addRoute(route);
+        }
+
+        this.router.refreshNavigation();
+    }
+
+    activate() {
+        this.routeList = [{
+                "route": "users",
+                "name": "users",
+                "moduleId": "users",
+                "nav": true,
+                "title": "Github Users",
+                "href": "#users",
+                "auth": true
+            },
+            {
+                "route": "child-router",
+                "name": "child-router",
+                "moduleId": "child-router",
+                "nav": true,
+                "title": "Child Router",
+                "href": "#child-router",
+                "auth": true
+            }
+        ];
     }
 
     attached() {
