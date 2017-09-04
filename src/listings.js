@@ -23,8 +23,6 @@ export class listings {
         this.firstTime = true;
     }
 
-
-
     // ---------------------------------------------------------------------------------
     // Class Variables
     // ---------------------------------------------------------------------------------
@@ -36,7 +34,6 @@ export class listings {
     longitude = -122.349275;
     latitude = 47.620548;
 
-
     // ---------------------------------------------------------------------------------
     // Map Globals
     // --------------------------------------------------------------------------------- 
@@ -47,14 +44,11 @@ export class listings {
 
     POIs = [{ POIID: 0, POIName: 'None' }];
 
-
     // ---------------------------------------------------------------------------------
     // Filters
     // ---------------------------------------------------------------------------------
 
     filters = { Style: [], MinBeds: [0], MaxBeds: [0], MinSqft: [0], MaxSqft: [0], POIMaxDriveTime: [300], POI: [], MHA: [], MHA2: [], UV: [], FUV: [], DOM: [0], STATDAYS: [1], MinPrice: [0], MaxPrice: [100000000], MinLot: [0], MaxLot: [4000000], ListingStatus: ['A'], Zoning: [], Use: ['SF', 'MF', 'Vacant', 'C'] };
-
-
 
     @bindable mapMarkers = [
 
@@ -84,10 +78,6 @@ export class listings {
     attached() {
         var self = this;
 
-
-        // Initialize Price Range Slider
-        //$('[data-ui-slider]').slider();
-
         // Price Range Slider filter event
         $(document).ready(function() {
             $("#priceRangeSliderID").change(function() {
@@ -96,7 +86,6 @@ export class listings {
                 var maxPrice = priceRange[1];
                 self.filters["MinPrice"][0] = minPrice;
                 self.filters["MaxPrice"][0] = maxPrice;
-                //console.log("4444");
                 self.refreshData();
             });
         });
@@ -109,7 +98,6 @@ export class listings {
                 var maxLot = priceRange[1];
                 self.filters["MinLot"][0] = minLot;
                 self.filters["MaxLot"][0] = maxLot;
-                //console.log("3333");
                 self.refreshData();
             });
         });
@@ -130,12 +118,9 @@ export class listings {
         });
 
         // Map Boudries filter event
-
         this.eventAggregator.subscribe('googlemap:bounds_changed', response => {
-            //console.log(response);
-
             this.filters["Boundries"] = [response["f"]["f"], response["f"]["b"], response["b"]["f"], response["b"]["b"]];
-
+            debugger;
             if (this.firstTime == true)
                 this.loadMapLayers(this.GoogleMap);
 
@@ -146,17 +131,11 @@ export class listings {
 
         });
 
-
         // Refresh Listings on server listings event 
         this.eventAggregator.subscribe('RealtorAnalytics:Listings:Updated', response => {
             console.log("eventAggregator: realtoranalytics:listings:updated");
             self.refreshData();
         });
-
-        /*
-        this.eventAggregator.subscribe('googlemap:api:loaded', () => {  
-        });
-        */
     }
 
     loadMapLayers(map) {
@@ -166,19 +145,13 @@ export class listings {
         this.zoningChangeLayer = new google.maps.Data();
         this.transitLayer = new google.maps.Data();
         this.zoningLayer.loadGeoJson("/Admin/GIS/Layers/Zoning/Seattle/2017-06-HALA-DEIS/MHA_Zoning_Alt3.json");
-        //this.zoningLayer.loadGeoJson("/Admin/GIS/Layers/Zoning/Seattle/MHA_DraftZoningChanges.json");
-        //zoningChangeLayer.loadGeoJson("/Admin/GIS/Layers/Zoning/Seattle/MHA_ZoningChangeType.json");
         this.uvLayer.loadGeoJson("/Admin/GIS/Layers/Overlays/Seattle/2017MHAUrbanVillages.json");
         this.CurrentuvLayer.loadGeoJson("/Admin/GIS/Layers/Overlays/Seattle/UrbanVillages.json");
 
-
-
         this.zoningLayer.setMap(this.GoogleMap.map);
-        //zoningChangeLayer.setMap(this.GoogleMap.map);
         this.uvLayer.setMap(this.GoogleMap.map);
         this.CurrentuvLayer.setMap(this.GoogleMap.map);
         this.transitLayer.setMap(this.GoogleMap.map);
-
 
         this.uvLayer.setStyle(function(feature) {
             var uvtype = feature.getProperty('UV_TYPE');
@@ -213,7 +186,6 @@ export class listings {
             };
         });
 
-
         this.transitLayer.setStyle(function(feature) {
             var shapeTime = feature.getProperty('RE_NAME');
             var _color;
@@ -239,7 +211,6 @@ export class listings {
             };
         });
 
-
         this.CurrentuvLayer.setStyle(function(feature) {
             var uvtype = feature.getProperty('UV_TYPE');
             var _color;
@@ -260,47 +231,8 @@ export class listings {
                 clickable: false
             };
         });
-        /*
-        zoningChangeLayer.setStyle(function (feature) {
-                    
-            var Zone = feature.getProperty('MHA_ZONING').toUpperCase();
-            var _color;
-            var _fillOpacity;
-            var _strokeColor;
-            var _strokeWeight;
-            var _strokeOpacity;
-
-            _color = '#000000';
-            _fillOpacity = 0.15;
-            _strokeColor = '#000000';
-            _strokeWeight = '0'
-            _strokeOpacity = 0;
-
-            if (Zone == "RSL (M)") {
-                        
-                _fillOpacity = 0.00;
-                _strokeColor = '#0000FF';
-                _strokeWeight = '0'
-                _strokeOpacity = 0;
-            }
-                    
-
-
-            return {
-                fillColor: _color,
-                fillOpacity: _fillOpacity,
-                strokeColor: _strokeColor,
-                strokeOpacity: '0.5',
-                strokeWeight: _strokeWeight,
-                zIndex: 12,
-                clickable:false
-            };
-        });
-        */
-
 
         this.zoningLayer.setStyle(function(feature) {
-
             var objectID = feature.getProperty('ZONEID');
             var Zone = feature.getProperty('MHA_ZONING').toUpperCase();
             var ZoneDesc = feature.getProperty('ZONELUT_DE');
@@ -364,13 +296,9 @@ export class listings {
 
             _strokeColor = _color;
 
-
             if (isMHA == "1") {
-
                 _fillOpacity = 0.6;
-
             }
-
 
             return {
                 fillColor: _color,
@@ -379,15 +307,8 @@ export class listings {
                 strokeOpacity: _strokeOpacity,
                 strokeWeight: _strokeWeight,
                 zIndex: 3
-                    //clickable: false
             };
         });
-
-
-
-
-
-
     }
 
     hyperLink(url) {
@@ -415,7 +336,6 @@ export class listings {
         this.refreshData();
     }
 
-
     loadPOIs() {
         var self = this;
         debugger;
@@ -432,7 +352,6 @@ export class listings {
         this.appState.listingsHub.invoke('GetListings', this.filters).done(function(data) {
             console.log('Finished calling GetListings, result size was ', data.length);
             self.listings = JSON.parse(data);
-            //console.log(data);
             var haveNeighbourhood = true;
             var haveSNeighbourhood = true;
             for (var i = 0; i < self.listings.length; i++) {
@@ -484,7 +403,6 @@ export class listings {
                     self.listings[i]["CAPTEXT"] = "CAP " + self.listings[i]["CAP"] + "%";
                 }
 
-
                 if (haveNeighbourhood && haveSNeighbourhood)
                     self.listings[i]["NeighbourhoodUnited"] = self.listings[i]["Neighbourhood"] + " / " + self.listings[i]["SNeighbourhood"];
                 else if (haveNeighbourhood)
@@ -496,7 +414,6 @@ export class listings {
                 //self.listings[i]["NeighbourhoodUnited"] = camelize(self.listings[i]["NeighbourhoodUnited"]);
                 if (self.listings[i]["NeighbourhoodUnited"].length > 32)
                     self.listings[i]["NeighbourhoodUnited"] = self.listings[i]["NeighbourhoodUnited"].substring(0, 32) + "...";
-
             }
             self.mapMarkers = self.createMarkers(self.listings);
 
@@ -504,7 +421,6 @@ export class listings {
             console.log('Failed calling GetListings');
         });
     }
-
 
     // ---------------------------------------------------------------------------------
     // Map click event
@@ -519,8 +435,6 @@ export class listings {
         console.log(lat+':'+lng);
         */
     }
-
-
 
     titleCase(str) {
         str = str.replace("/", " ");
@@ -537,7 +451,6 @@ export class listings {
         return words.join(' ');
     }
 
-
     changePriceRange(event) {
         //console.log('A');
         //console.log(this.filters.MinPrice[0]);
@@ -547,7 +460,6 @@ export class listings {
         //console.log('A');
         //console.log(this.filters.MinPrice[0]);
     }
-
 
     createMarkers(listingsArray) {
         var markersArray = [];
@@ -612,7 +524,6 @@ export class listings {
             };
 
             markersArray.push(row);
-
         }
         //console.log(markersArray);
         return markersArray;
@@ -630,9 +541,6 @@ export class listings {
         this.longitude = _longitude;
         this.latitude = _latitude;
         this.mapMarkers = this.createMarkers(this.listings);
-        //console.log(this.mapMarkers[this.lookupIndexById(this.mapMarkers,id)].icon);
-        //this.mapMarkers[this.lookupIndexById(this.mapMarkers,id)].icon+="XX";
-        //this.mapMarkers.splice(this.lookupIndexById(this.mapMarkers,id),1);
     }
 
     // ---------------------------------------------------------------------------------
@@ -655,7 +563,6 @@ export class listings {
     POIchanged() {
         this.filters['POI'] = [];
         var poiid = $('select[name=POIsSelect]').val();
-        //console.log(poiid);
 
         var maxTime = $('select[name=POIsMaxTime]').val();
         var _map = this.GoogleMap.map;
@@ -664,11 +571,9 @@ export class listings {
             this.filters['POI'].push(poiid[i]);
 
         var self = this;
-        //this.filters['POI']=[poiid];
         this.filters['POIMaxDriveTime'] = [maxTime];
 
         if ((poiid == "") || (poiid.length == 0) || (poiid[0] == "")) {
-            //console.log("no poiid");
             this.refreshData();
             self.transitLayer.forEach(function(feature) {
                 self.transitLayer.remove(feature);
@@ -678,8 +583,6 @@ export class listings {
             this.CurrentuvLayer.setMap(this.GoogleMap.map);
             this.transitLayer.setMap(null);
         } else {
-
-
             this.zoningLayer.setMap(null);
             this.uvLayer.setMap(null);
             this.CurrentuvLayer.setMap(null);
@@ -691,14 +594,10 @@ export class listings {
             var iMax = poiid.length - 1;
             for (var i = 0; i <= iMax; i++) {
                 var url = "/FrontEnd/GIS/GetJSON.aspx?poiID=" + poiid[i] + "&poiTransitType=car&poiMaxValue=" + maxTime
-                    //console.log(url);
 
-                var promise = $.getJSON(url); //same as map.data.loadGeoJson();
+                var promise = $.getJSON(url);
                 promise.then(function(data) {
-                    //console.log(data);
-
                     self.transitLayer.addGeoJson(data);
-
 
                     if (iCounter == iMax) {
                         var bounds = new google.maps.LatLngBounds();
@@ -713,10 +612,6 @@ export class listings {
                     iCounter++;
                 });
             }
-            /*
-     
-      */
-
         }
     }
 
