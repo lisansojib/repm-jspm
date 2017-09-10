@@ -2,17 +2,20 @@ import { AuthService } from 'aurelia-authentication';
 import { inject, computedFrom } from 'aurelia-framework';
 import { ValidationControllerFactory, ValidationRules } from 'aurelia-validation';
 import { BootstrapFormRenderer } from 'resources/renderer/bootstrap-form-renderer';
+import { AppService } from 'appService';
+import { App } from 'app';
 
-@inject(ValidationControllerFactory, AuthService)
+@inject(ValidationControllerFactory, AuthService, App, AppService)
 export class Login {
     username = '';
     password = '';
     controller = null;
     rememberMe = false;
 
-    constructor(controllerFactory, authService) {
-        debugger;
+    constructor(controllerFactory, authService, app, appService) {
         this.authService = authService;
+        this.app = app;
+        this.appService = appService;
         this.controller = controllerFactory.createForCurrentScope();
         this.controller.addRenderer(new BootstrapFormRenderer());
     }
@@ -26,7 +29,6 @@ export class Login {
     submit() {
         return this.controller.validate()
             .then(result => {
-                debugger;
                 if (result.valid) {
                     toastr.info("You are now sign in to Puget builder");
                     this.authService.login({
@@ -40,9 +42,9 @@ export class Login {
                             }
                         })
                         .then(response => {
-                            debugger;
                             toastr.success('Login successful');
-                            localStorage.setItem('session_token', response.session_token)
+                            localStorage.setItem('session_token', response.session_token);
+                            this.updateRoutes(response.session_token);
                         })
                         .catch(err => {
                             toastr.error("Invalid email or password.");
@@ -57,15 +59,44 @@ export class Login {
         }
     }
 
-    authenticate(name) {
+    updateRoutes(session_token) {
         debugger;
+        let url = `routes?token=${session_token}`;
+        this.appService.httpClient
+            .fetch(url, {
+                method: 'get'
+            })
+            .then(response => response.json())
+            .then(routes => {
+                let routeList = JSON.parse(routes);
+
+                debugger;
+                this.app.router.routes = [];
+                this.app.router.refreshNavigation();
+                for (let route of this.app.baseRoutes) {
+                    debugger;
+                    this.app.router.addRoute(route);
+                }
+
+                debugger;
+                this.app.router.refreshNavigation();
+
+                for (let route of routeList) {
+                    debugger;
+                    this.app.router.addRoute(route);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    authenticate(name) {
         return this.authService.authenticate(name)
             .then(response => {
-                debugger;
                 console.log("auth response " + response);
             })
             .catch(err => {
-                debugger;
                 console.log(err);
             });
     }

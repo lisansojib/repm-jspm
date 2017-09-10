@@ -14,8 +14,8 @@ export class listings {
     // ---------------------------------------------------------------------------------
 
     constructor(appState, router, eventAggregator, authService) {
+        debugger;
         this.appState = appState;
-        this.appState.refreshConnection();
         this.router = router;
         this.eventAggregator = eventAggregator;
         this.authService = authService;
@@ -75,8 +75,17 @@ export class listings {
         return this.appState.isAuthenticated;
     }
 
+    activate() {
+        if (!localStorage.getItem('initial_load')) {
+            localStorage.setItem('initial_load', true);
+            window.location.reload(true);
+        }
+    }
+
     attached() {
         var self = this;
+
+        this.appState.refreshConnection();
 
         // Price Range Slider filter event
         $(document).ready(function() {
@@ -119,6 +128,7 @@ export class listings {
 
         // Map Boudries filter event
         this.eventAggregator.subscribe('googlemap:bounds_changed', response => {
+            debugger;
             this.filters["Boundries"] = [response["f"]["f"], response["f"]["b"], response["b"]["f"], response["b"]["b"]];
             debugger;
             if (this.firstTime == true)
@@ -340,17 +350,17 @@ export class listings {
         var self = this;
         debugger;
         this.appState.listingsHub.invoke('GetPOIs').done(function(data) {
+            debugger;
             self.POIs = JSON.parse(data);
         }).fail(function(data) {
+            debugger;
             console.log('Failed calling GetPOIs');
         });
     }
 
     refreshData() {
         var self = this;
-        debugger;
         this.appState.listingsHub.invoke('GetListings', this.filters).done(function(data) {
-            console.log('Finished calling GetListings, result size was ', data.length);
             self.listings = JSON.parse(data);
             var haveNeighbourhood = true;
             var haveSNeighbourhood = true;
@@ -434,6 +444,15 @@ export class listings {
         console.log(event);
         console.log(lat+':'+lng);
         */
+    }
+
+    // ---------------------------------------------------------------------------------
+    // Map load event
+    // ---------------------------------------------------------------------------------
+    myLoadedCallback(map, $event) {
+        if (!map)
+            map = this.GoogleMap;
+        this.loadMapLayers(map);
     }
 
     titleCase(str) {
@@ -573,6 +592,7 @@ export class listings {
         var self = this;
         this.filters['POIMaxDriveTime'] = [maxTime];
 
+        debugger;
         if ((poiid == "") || (poiid.length == 0) || (poiid[0] == "")) {
             this.refreshData();
             self.transitLayer.forEach(function(feature) {
@@ -597,6 +617,7 @@ export class listings {
 
                 var promise = $.getJSON(url);
                 promise.then(function(data) {
+                    debugger;
                     self.transitLayer.addGeoJson(data);
 
                     if (iCounter == iMax) {

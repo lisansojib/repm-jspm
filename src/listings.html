@@ -123,7 +123,7 @@
         
         <div class="row" style="height:100%">
             <div class="col-md-6" style="height:100%"> 
-        <google-map view-model.ref="GoogleMap" latitude.bind="latitude" longitude.bind="longitude" style="height:700px" map-click.delegate="onClickMap($event)" markers.bind="mapMarkers" zoom="13"></google-map>               
+        <google-map view-model.ref="GoogleMap" map-loaded.call="myLoadedCallback(map, $event)" latitude.bind="latitude" longitude.bind="longitude" style="height:700px" map-click.delegate="onClickMap($event)" markers.bind="mapMarkers" zoom="13"></google-map>               
                 <!-- <google-map view-model.ref="GoogleMap" style="height:700px" map-click.delegate="onClickMap($event)" markers.bind="mapMarkers" style="height:600px" zoom="13"  latitudebind="latitude" longitudebind="longitude"   address="Seattle, WA"></google-map>                        -->
             </div>            
 

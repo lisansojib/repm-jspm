@@ -10,7 +10,7 @@ export default {
     configureEndpoints: ['auth'],
 
     // SPA related options  
-    loginRedirect: '#/listings', // The SPA url to which the user is redirected after a successful login  
+    loginRedirect: '#/home', // The SPA url to which the user is redirected after a successful login  
     logoutRedirect: '#/login', // The SPA url to which the user is redirected after a successful logout  
     loginRoute: '/login', // The SPA route used when an unauthenticated user tries to access an SPA page that requires authentication  
     loginOnSignup: false, // Whether or not an authentication token is provided in the response to a successful signup  
