@@ -8,10 +8,6 @@ import { AppService } from 'appService';
 @inject(applicationState, AuthService, AppService)
 export class App {
     routeList = [];
-    baseRoutes = [
-        { route: '', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' },
-        { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' }
-    ]
 
     constructor(appState, authService, appService) {
         this.appState = appState;
@@ -21,42 +17,13 @@ export class App {
 
     configureRouter(config, router) {
         config.title = 'Welcome';
-        config.addPipelineStep('authorize', AuthorizeStep);
-        config.mapUnknownRoutes('not-found');
-        // config.map([
-        //     { route: ['', 'login'], name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' }
-        // ]);
-
         this.router = router;
-
-        for (let route of this.baseRoutes) {
-            this.router.addRoute(route);
-        }
-
-        for (let route of this.routeList) {
-            this.router.addRoute(route);
-        }
-
-        this.router.refreshNavigation();
+        config.addAuthorizeStep(AuthorizeStep);
+        config.mapUnknownRoutes('not-found');
+        config.map({ route: ['', 'login'], name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' });
     }
 
-    activate() {
-        let session_token = "";
-        if (localStorage.getItem('session_token'))
-            session_token = localStorage.getItem('session_token');
-        let url = `routes?token=${session_token}`;
-        this.appService.httpClient
-            .fetch(url, {
-                method: 'get'
-            })
-            .then(response => response.json())
-            .then(routes => {
-                this.routeList = JSON.parse(routes);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+    activate() {}
 
     attached() {
         this.appState.refreshConnection();
@@ -78,18 +45,59 @@ export class App {
     }
 }
 
-@inject(applicationState)
+@inject(applicationState, AppService, App)
 class AuthorizeStep {
-    constructor(applicationState) {
+    routeList = [];
+
+    constructor(applicationState, appService, app) {
         this.applicationState = applicationState;
+        this.appService = appService;
+        this.app = app;
     }
 
     run(navigationInstruction, next) {
+        debugger;
+        this.updateRoutes();
+
         if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
             if (!this.applicationState.isAuthenticated)
                 window.location.href = "#/login"; //window.location.href = baseUrl() + "#/login";
         }
 
         return next();
+    }
+
+    updateRoutes() {
+        let session_token = "";
+        if (localStorage.getItem('session_token'))
+            session_token = localStorage.getItem('session_token');
+        let url = `routes?token=${session_token}`;
+        this.appService.httpClient
+            .fetch(url, {
+                method: 'get'
+            })
+            .then(response => response.json())
+            .then(routes => {
+                debugger;
+                let items = JSON.parse(routes);
+                for (let route of items) {
+                    debugger;
+                    if (this.app.router.hasOwnRoute(route.name))
+                        continue;
+                    // if (this.app.router.hasOwnRoute(route.name)) {
+                    //     var existingRout = this.app.router.find(x => x.name == route.name);
+                    //     debugger;
+                    //     existingRout.roles = route.roles;
+                    //     existingRout.nav = route.nav;
+                    //     this.app.router.refreshNavigation();
+                    //     continue;
+                    // }
+                    this.app.router.addRoute(route);
+                    this.app.router.refreshNavigation();
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 }

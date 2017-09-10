@@ -44,7 +44,6 @@ export class Login {
                         .then(response => {
                             toastr.success('Login successful');
                             localStorage.setItem('session_token', response.session_token);
-                            this.updateRoutes(response.session_token);
                         })
                         .catch(err => {
                             toastr.error("Invalid email or password.");
@@ -59,37 +58,36 @@ export class Login {
         }
     }
 
-    updateRoutes(session_token) {
-        debugger;
-        let url = `routes?token=${session_token}`;
-        this.appService.httpClient
-            .fetch(url, {
-                method: 'get'
-            })
-            .then(response => response.json())
-            .then(routes => {
-                let routeList = JSON.parse(routes);
+    // updateRoutes(session_token) {
+    //     let url = `routes?token=${session_token}`;
+    //     this.appService.httpClient
+    //         .fetch(url, {
+    //             method: 'get'
+    //         })
+    //         .then(response => response.json())
+    //         .then(routes => {
+    //             let routeList = JSON.parse(routes);
 
-                debugger;
-                this.app.router.routes = [];
-                this.app.router.refreshNavigation();
-                for (let route of this.app.baseRoutes) {
-                    debugger;
-                    this.app.router.addRoute(route);
-                }
+    //             for (let route of routeList) {
+    //                 debugger;
+    //                 if (this.app.router.hasOwnRoute(route.name)) {
+    //                     var existingRout = this.app.router.find(x => x.name == route.name);
+    //                     debugger;
+    //                     existingRout.roles = route.roles;
+    //                     existingRout.nav = route.nav;
+    //                     continue;
+    //                 }
 
-                debugger;
-                this.app.router.refreshNavigation();
+    //                 this.app.router.addRoute(route);
+    //             }
 
-                for (let route of routeList) {
-                    debugger;
-                    this.app.router.addRoute(route);
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+    //             debugger;
+    //             this.app.router.refreshNavigation();
+    //         })
+    //         .catch(error => {
+    //             console.log(error);
+    //         });
+    // }
 
     authenticate(name) {
         return this.authService.authenticate(name)
