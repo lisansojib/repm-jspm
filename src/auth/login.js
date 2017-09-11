@@ -43,6 +43,7 @@ export class Login {
                         })
                         .then(response => {
                             toastr.success('Login successful');
+                            localStorage.setItem('route_mapped', false);
                             localStorage.setItem('session_token', response.session_token);
                         })
                         .catch(err => {

@@ -10,9 +10,11 @@ export class App {
     routeList = [];
 
     constructor(appState, authService, appService) {
+        debugger;
         this.appState = appState;
         this.authService = authService;
         this.appService = appService;
+        localStorage.setItem('route_mapped', false);
     }
 
     configureRouter(config, router) {
@@ -57,11 +59,21 @@ class AuthorizeStep {
 
     run(navigationInstruction, next) {
         debugger;
-        this.updateRoutes();
+        var v = this.app.router;
+        if (localStorage.getItem('route_mapped') == 'false' || !localStorage.getItem('route_mapped')) {
+            localStorage.setItem('route_mapped', true);
+            this.updateRoutes();
+        } else if (localStorage.getItem('route_mapped') == 'false' || !localStorage.getItem('route_mapped') && (localStorage.getItem('route_loaded') == 'true')) {
+            var routeList = JSON.parse(localStorage.getItem('route_list'));
+            for (let item of routeList) {
+                this.app.router.addRoute(item);
+            }
+            localStorage.setItem('route_mapped', true);
+        }
 
         if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
             if (!this.applicationState.isAuthenticated)
-                window.location.href = "#/login"; //window.location.href = baseUrl() + "#/login";
+                window.location.href = "#login"; //window.location.href = baseUrl() + "#/login";
         }
 
         return next();
@@ -78,20 +90,13 @@ class AuthorizeStep {
             })
             .then(response => response.json())
             .then(routes => {
-                debugger;
+                localStorage.setItem('route_loaded', true);
+                localStorage.setItem('route_list', routes);
                 let items = JSON.parse(routes);
                 for (let route of items) {
-                    debugger;
                     if (this.app.router.hasOwnRoute(route.name))
                         continue;
-                    // if (this.app.router.hasOwnRoute(route.name)) {
-                    //     var existingRout = this.app.router.find(x => x.name == route.name);
-                    //     debugger;
-                    //     existingRout.roles = route.roles;
-                    //     existingRout.nav = route.nav;
-                    //     this.app.router.refreshNavigation();
-                    //     continue;
-                    // }
+
                     this.app.router.addRoute(route);
                     this.app.router.refreshNavigation();
                 }
