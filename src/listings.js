@@ -14,7 +14,6 @@ export class listings {
     // ---------------------------------------------------------------------------------
 
     constructor(appState, router, eventAggregator, authService) {
-        debugger;
         this.appState = appState;
         this.router = router;
         this.eventAggregator = eventAggregator;
@@ -76,10 +75,10 @@ export class listings {
     }
 
     activate() {
-        if (!localStorage.getItem('initial_load')) {
-            localStorage.setItem('initial_load', true);
-            window.location.reload(true);
-        }
+        // if (!localStorage.getItem('initial_load')) {
+        //     localStorage.setItem('initial_load', true);
+        //     window.location.reload(true);
+        // }
     }
 
     attached() {

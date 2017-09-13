@@ -43,7 +43,7 @@ export class Login {
                         })
                         .then(response => {
                             toastr.success('Login successful');
-                            localStorage.setItem('route_mapped', false);
+                            localStorage.setItem('route_loaded', false);
                             localStorage.setItem('session_token', response.session_token);
                         })
                         .catch(err => {
@@ -58,37 +58,6 @@ export class Login {
             window.location.href = "/";
         }
     }
-
-    // updateRoutes(session_token) {
-    //     let url = `routes?token=${session_token}`;
-    //     this.appService.httpClient
-    //         .fetch(url, {
-    //             method: 'get'
-    //         })
-    //         .then(response => response.json())
-    //         .then(routes => {
-    //             let routeList = JSON.parse(routes);
-
-    //             for (let route of routeList) {
-    //                 debugger;
-    //                 if (this.app.router.hasOwnRoute(route.name)) {
-    //                     var existingRout = this.app.router.find(x => x.name == route.name);
-    //                     debugger;
-    //                     existingRout.roles = route.roles;
-    //                     existingRout.nav = route.nav;
-    //                     continue;
-    //                 }
-
-    //                 this.app.router.addRoute(route);
-    //             }
-
-    //             debugger;
-    //             this.app.router.refreshNavigation();
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }
 
     authenticate(name) {
         return this.authService.authenticate(name)
