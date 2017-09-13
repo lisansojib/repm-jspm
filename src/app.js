@@ -7,9 +7,10 @@ import { AppService } from 'appService';
 
 @inject(applicationState, AuthService, AppService)
 export class App {
+    baseUrl = "http://localhost:52377/ra2/ra-web";
     defaultRoutes = [
-        { route: '', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' },
-        { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login' },
+        { route: '', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login', href: "#home", auth: false },
+        { route: 'login', name: 'login', moduleId: 'auth/login', nav: false, title: 'Login', href: "#home", auth: false },
         { route: "home", name: "Home", moduleId: "./home", nav: true, title: "Home", href: "#home", auth: false },
         { route: "about", name: "About", moduleId: "./about", nav: true, title: "About Us", href: "#about", auth: false },
         { route: "contact", name: "Contact", moduleId: "./contact", nav: true, title: "Contact Us", href: "#contact", auth: false }
@@ -29,7 +30,7 @@ export class App {
 
     configureRouter(config, router) {
         config.title = 'Welcome';
-        config.baseUrl = "http://localhost:52377/ra2/ra-web";
+        config.baseUrl = this.baseUrl;
         this.router = router;
         config.addAuthorizeStep(AuthorizeStep);
 
@@ -47,6 +48,7 @@ export class App {
                     this.router.addRoute(item);
                     this.router.refreshNavigation();
                 }
+                this.router.baseUrl = this.baseUrl;
 
                 var routeName = instruction.fragment;
                 if (routeName.startsWith("/"))
@@ -61,10 +63,7 @@ export class App {
         config.map(this.defaultRoutes);
     }
 
-    activate() {
-        if (localStorage.getItem('route_loaded') == 'false')
-            this.updateRoutes();
-    }
+    activate() {}
 
     attached() {}
 
@@ -93,6 +92,7 @@ export class App {
                     this.router.addRoute(route);
                     this.router.refreshNavigation();
                 }
+                this.router.baseUrl = this.baseUrl;
             })
             .catch(error => {
                 console.log(error);
@@ -100,7 +100,7 @@ export class App {
     }
 
     logout() {
-        let logoutRedirect = `${this.router.baseUrl} + '#login`;
+        let logoutRedirect = `${this.baseUrl}#login`;
         this.authService.logout(logoutRedirect)
             .then(response => {
                 localStorage.removeItem('session_token');
@@ -126,7 +126,7 @@ class AuthorizeStep {
 
         if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
             if (!this.applicationState.isAuthenticated)
-                window.location.href = `${this.router.baseUrl} + '#login`;
+                window.location.href = `${this.app.baseUrl}#login`;
         }
 
         return next();
