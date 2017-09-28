@@ -23,8 +23,9 @@ export class App {
         if (!localStorage.getItem('app_loaded')) {
             localStorage.setItem('route_list', JSON.stringify(this.defaultRoutes));
             localStorage.setItem('route_loaded', false);
-            localStorage.setItem('app_loaded', true)
+            localStorage.setItem('app_loaded', true);
         }
+
         this.appState.refreshConnection();
     }
 
@@ -32,35 +33,10 @@ export class App {
         config.title = 'Welcome';
         config.baseUrl = this.baseUrl;
         this.router = router;
+        let routeList = JSON.parse(localStorage.getItem('route_list'));
         config.addAuthorizeStep(AuthorizeStep);
-
-        var handleUnknownRoutes = (instruction) => {
-            // if (localStorage.getItem('route_loaded') == 'false') {
-            //     this.updateRoutes();
-            //     return { route: 'login', moduleId: 'auth/login' };
-            // }
-
-            if (localStorage.getItem('route_loaded') == 'true') {
-                var routeList = JSON.parse(localStorage.getItem('route_list'));
-                this.router.navigation = [];
-                this.router.routes = [];
-                for (let item of routeList) {
-                    this.router.addRoute(item);
-                    this.router.refreshNavigation();
-                }
-                this.router.baseUrl = this.baseUrl;
-
-                var routeName = instruction.fragment;
-                if (routeName.startsWith("/"))
-                    routeName = instruction.fragment.substring(1);
-                var route = routeList.find(x => x.route == routeName);
-                return { route: routeName, moduleId: route.moduleId };
-            }
-
-            return { route: 'not-found', moduleId: 'not-found' };
-        }
-        config.mapUnknownRoutes(handleUnknownRoutes);
-        config.map(this.defaultRoutes);
+        config.mapUnknownRoutes('not-found');
+        config.map(routeList);
     }
 
     activate() {}
@@ -108,6 +84,10 @@ export class App {
             .catch(err => {
                 console.log("error logged out");
             });
+    }
+
+    refreshConnection() {
+        this.appState.refreshConnection();
     }
 }
 
